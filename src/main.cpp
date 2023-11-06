@@ -3,14 +3,18 @@
 #include "color.h"
 #include "background.h"
 #include "screenb.h"
-#include "map.h"
+#include "player.h"
+#include "cast.h"
 
 #define VRX_PIN 35
 
 #define VRY_PIN 34
 
+Player player;
 int valueX = 0;
 int valueY = 0;
+float sensibility = 0.1f;
+float sensibilityPos = 0.5f;
 float deathZone = 0.1f;
 
 void setup()
@@ -18,7 +22,7 @@ void setup()
   Serial.begin(115200);
   initScreen();
   initBG(&spr);
-  initMap();
+  initMap(&player);
 }
 
 void loop()
@@ -33,8 +37,18 @@ void loop()
   mappedX = abs(mappedX) < deathZone ? 0.0f : mappedX;
   mappedY = abs(mappedY) < deathZone ? 0.0f : mappedY;
 
-  spr.drawPixel(mappedX*(spr.width()/2.0f) + spr.width()/2.0f, mappedY*(spr.height()/2.0f) + spr.height()/2.0f, TFT_WHITE);
+  if (mappedX != 0)
+  {
+    player.angle += mappedX * sensibility;
+  }
+
+  if (mappedY != 0){
+    player.y += mappedY * sensibilityPos;
+  }
+
+  spr.drawPixel(mappedX * (spr.width() / 2.0f) + spr.width() / 2.0f, mappedY * (spr.height() / 2.0f) + spr.height() / 2.0f, TFT_WHITE);
 
   loopMiniMap();
+  render(&player, &spr);
   spr.pushSprite(0, 0);
 }

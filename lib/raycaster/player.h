@@ -3,9 +3,9 @@
 #include <Arduino.h>
 
 struct Player {
-  uint16_t  x;
-  uint16_t  y;
-  float a;
+  float x;
+  float  y;
+  float angle;
   float fov;
 };
 
