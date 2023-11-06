@@ -31,8 +31,8 @@ void loop()
   valueX = analogRead(VRX_PIN);
   valueY = analogRead(VRY_PIN);
 
-  float mappedX = (static_cast<float>(valueX) - 2048.0f) / 2048.0f;
-  float mappedY = (static_cast<float>(valueY) - 2048.0f) / 2048.0f;
+  float mappedX = -(static_cast<float>(valueX) - 2048.0f) / 2048.0f;
+  float mappedY = -(static_cast<float>(valueY) - 2048.0f) / 2048.0f;
 
   mappedX = abs(mappedX) < deathZone ? 0.0f : mappedX;
   mappedY = abs(mappedY) < deathZone ? 0.0f : mappedY;
@@ -42,11 +42,13 @@ void loop()
     player.angle += mappedX * sensibility;
   }
 
-  if (mappedY != 0){
-    player.y += mappedY * sensibilityPos;
+  if (mappedY != 0)
+  {
+    float deltaX = cos(player.angle) * mappedY * sensibilityPos;
+    float deltaY = sin(player.angle) * mappedY * sensibilityPos;
+    player.y += deltaY;
+    player.x += deltaX;
   }
-
-  spr.drawPixel(mappedX * (spr.width() / 2.0f) + spr.width() / 2.0f, mappedY * (spr.height() / 2.0f) + spr.height() / 2.0f, TFT_WHITE);
 
   loopMiniMap();
   render(&player, &spr);

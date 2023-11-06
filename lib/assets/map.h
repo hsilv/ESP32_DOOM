@@ -15,18 +15,18 @@ void initMap(Player *player)
 {
     mapV.shrink_to_fit();
     mapV.push_back(String("+--+--+--+--+--+"));
-    mapV.push_back(String("|              |"));
-    mapV.push_back(String("+     +--+     +"));
-    mapV.push_back(String("|     +        *"));
-    mapV.push_back(String("+              +"));
-    mapV.push_back(String("|              *"));
-    mapV.push_back(String("+              +"));
-    mapV.push_back(String("|              *"));
-    mapV.push_back(String("+              +"));
-    mapV.push_back(String("|              g"));
+    mapV.push_back(String("|           *  |"));
+    mapV.push_back(String("+  +--+--+  +  +"));
+    mapV.push_back(String("|  |     |     *"));
+    mapV.push_back(String("+  +--+  +--+  +"));
+    mapV.push_back(String("|     |     |  *"));
+    mapV.push_back(String("+--+  +--+  +  +"));
+    mapV.push_back(String("|     |  |     *"));
+    mapV.push_back(String("+  +--+  +  +**+"));
+    mapV.push_back(String("|        |     g"));
     mapV.push_back(String("+--+--+--+--+**+"));
     miniMap.createSprite(spr.width() / 2.0f, spr.height() / 2.0f);
-    miniMap.fillSprite(TFT_BLACK);
+    miniMap.fillSprite(TFT_RED);
     blockWidth = static_cast<float>(miniMap.width())/static_cast<float>(mapV.at(0).length());
     blockHeight = static_cast<float>(miniMap.height())/static_cast<float>(mapV.size());
     miniMap.pushToSprite(&spr, 0, 0);
