@@ -5,30 +5,35 @@
 #include "impact.h"
 #include "player.h"
 #include "map.h"
+#include <string>
+#include "colors.h"
+#include <unordered_map>
 
-float castRay(float angle, Player *player)
+Impact castRay(float angle, Player *player)
 {
-    float c = 0;
+    float d = 0;
+    std::string hit = " ";
     while (true)
     {
-        int x = static_cast<int>(player->x + c * cos(angle));
-        int y = static_cast<int>(player->y + c * sin(angle));
+        int x = static_cast<int>(player->x + d * cos(angle));
+        int y = static_cast<int>(player->y + d * sin(angle));
 
         int i = static_cast<int>(x / blockWidth);
         int j = static_cast<int>(y / blockHeight);
 
         if (!(i > 15 || j > 10))
         {
-            if (mapV.at(j).charAt(i) != ' ')
+            if (mapV.at(j).at(i) != ' ')
             {
+                hit = mapV.at(j).at(i);
                 break;
             }
         }
         miniMap.drawPixel(x, y, TFT_YELLOW);
 
-        c += 0.2f;
+        d += 0.2f;
     };
-    return c;
+    return Impact{d, colors[hit]};
 }
 
 void drawStake(uint16_t x, float h, Color c)
@@ -42,14 +47,18 @@ void render(Player *player, TFT_eSprite *spr)
     for (int i = 0; i < spr->width(); i++)
     {
         float a = player->angle + player->fov / 2.0f - player->fov * i / spr->width();
-        float d = castRay(a, player);
+        Impact impact = castRay(a, player);
         float h = 0;
-        if (d != 0){
-            h = (spr->height() / d) * 5.0f;
-        } else {
+        float correct = impact.d * cos(player->angle - a);
+        if (impact.d != 0)
+        {
+            h = static_cast<float>(spr->height() / correct) * 5.0f;
+        }
+        else
+        {
             h = spr->height();
         }
-        drawStake(i, h, Color(0, 255, 0));
+        drawStake(i, h, impact.color);
     }
     miniMap.pushToSprite(spr, 0, 0);
 }

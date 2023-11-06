@@ -1,11 +1,11 @@
 #ifndef IMPACT_H
 #define IMPACT_H
 #include <Arduino.h>
+#include "color.h"
 
 struct Impact {
     float d;
-    String mapHit;
-    u_int16_t tx;
+    Color color;
 };
 
 #endif
