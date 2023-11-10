@@ -1,10 +1,13 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
+#include <JPEGDecoder.h>
 #include "color.h"
+#include <SD.h>
 #include "background.h"
 #include "screenb.h"
 #include "player.h"
 #include "cast.h"
+#include "read.h"
 
 #define VRX_PIN 35
 
@@ -23,6 +26,7 @@ void setup()
   initScreen();
   initBG(&spr);
   initMap(&player);
+  setupSD();
 }
 
 void loop()
